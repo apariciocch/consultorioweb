@@ -472,21 +472,29 @@ cuestionario.addEventListener('submit', function(event) {
 
     Object.keys(mapBrIds).forEach(k => {
         const cell = document.getElementById(mapBrIds[k]);
-        if (cell) {
-            const code = codeMap[k];
-            if (code && results[k] !== undefined) {
-                const br = obtenerBR(generoSeleccionado, code, results[k]);
-                cell.textContent = br;
-                const bar = document.getElementById('bar-' + k);
-                if (bar) {
-                    const info = obtenerClasificacion(br);
-                    bar.style.width = Math.min(br, 115) / 115 * 100 + '%';
-                    bar.classList.add(info.clase);
-                    bar.setAttribute('data-label', info.texto);
-                }
-            } else {
-                cell.textContent = '';
-            }
+        if (!cell) return;
+        const code = codeMap[k];
+        if (!(code && results[k] !== undefined)) {
+            cell.textContent = '';
+            return;
+        }
+
+        const br = obtenerBR(generoSeleccionado, code, results[k]);
+        cell.textContent = br;
+
+        const bar = document.getElementById('bar-' + k);
+        if (!bar) return;
+
+        if (k === 'validez') {
+            const valido = results[k] <= 1;
+            bar.style.width = '100%';
+            bar.classList.add(valido ? 'valido' : 'invalido');
+            bar.setAttribute('data-label', valido ? 'Válido' : 'Inválido');
+        } else {
+            const info = obtenerClasificacion(br);
+            bar.style.width = Math.min(br, 115) / 115 * 100 + '%';
+            bar.classList.add(info.clase);
+            bar.setAttribute('data-label', info.texto);
         }
     });
 
