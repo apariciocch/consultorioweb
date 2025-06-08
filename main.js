@@ -509,47 +509,40 @@ function actualizarGrafico() {
         'Bipolar','Distímico','Alcohol','Sustancias','Estrés Post.','Pensamiento',
         'Depresión mayor','Delirante','Sinceridad','Deseabilidad','Devaluación','Validez'
     ];
-    const dataBR = keys.map(k => obtenerBR(generoSeleccionado, codeMap[k], lastResults[k] || 0));
-    const dataRaw = keys.map(k => lastResults[k] || 0);
+    const data = keys.map(k => obtenerBR(generoSeleccionado, codeMap[k], lastResults[k] || 0));
     const backgroundColorZones = [
         { label: 'Bajo', color: 'rgba(147, 197, 253, 0.2)', start: 0, end: 60 },
         { label: 'Promedio', color: 'rgba(134, 239, 172, 0.2)', start: 60, end: 75 },
         { label: 'Elevado', color: 'rgba(253, 224, 71, 0.2)', start: 75, end: 85 },
-        { label: 'Clínico', color: 'rgba(251, 113, 133, 0.2)', start: 85, end: 200 }
+        { label: 'Clínico', color: 'rgba(251, 113, 133, 0.2)', start: 85, end: 115 }
     ];
 
     if (mcmiChart) mcmiChart.destroy();
 
     mcmiChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
             labels: labels,
-            datasets: [
-                {
-                    label: 'Bruto',
-                    data: dataRaw,
-                    backgroundColor: '#3b82f6'
-                },
-                {
-                    label: 'BR',
-                    data: dataBR,
-                    backgroundColor: '#ef4444'
-                }
-            ]
+            datasets: [{
+                label: 'Puntaje MCMI-III',
+                data: data,
+                borderColor: '#1e3a8a',
+                pointBackgroundColor: '#000',
+                borderWidth: 2,
+                fill: false
+            }]
         },
         options: {
             indexAxis: 'y',
             scales: {
-                x: { min: 0, max: 200, ticks: { stepSize: 10 }, grid: { drawTicks: true, drawOnChartArea: true } },
+                x: { min: 0, max: 115, ticks: { stepSize: 10 }, grid: { drawTicks: true, drawOnChartArea: true } },
                 y: { beginAtZero: true }
             },
             plugins: {
-                legend: { display: true },
+                legend: { display: false },
                 tooltip: {
                     callbacks: {
-                        label: function(context) {
-                            return `${context.dataset.label}: ${context.raw}`;
-                        }
+                        label: function(context) { return `${context.label}: ${context.raw}`; }
                     }
                 }
             }
@@ -745,7 +738,7 @@ cuestionario.addEventListener('submit', function(event) {
             bar.setAttribute('data-label', valido ? 'Válido' : 'Inválido');
         } else {
             const info = obtenerClasificacion(br);
-            bar.style.width = Math.min(br, 200) / 200 * 100 + '%';
+            bar.style.width = Math.min(br, 115) / 115 * 100 + '%';
             bar.classList.add(info.clase);
             bar.setAttribute('data-label', info.texto);
         }
