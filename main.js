@@ -187,7 +187,7 @@ const cuestionario = document.getElementById('cuestionario');
 preguntas.forEach((texto, index) => {
     const fieldset = document.createElement('fieldset');
     const legend = document.createElement('legend');
-    legend.textContent = texto;
+    legend.textContent = (index + 1) + '. ' + texto;
     fieldset.appendChild(legend);
 
     const labelV = document.createElement('label');
