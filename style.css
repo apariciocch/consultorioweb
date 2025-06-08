@@ -85,3 +85,11 @@ canvas {
     margin: auto;
     display: block;
 }
+/* info styles */
+#chart-info {
+    max-width: 600px;
+    margin-top: 10px;
+}
+.amber-light { background-color: #fef3c7; padding: 5px; }
+.amber { background-color: #fde68a; padding: 5px; }
+#chart-info ul { margin: 0; padding-left: 20px; }
