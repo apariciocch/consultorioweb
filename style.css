@@ -79,3 +79,9 @@ button {
 .nulo { background-color: #95a5a6; }
 .valido { background-color: #2ecc71; }
 .invalido { background-color: #e74c3c; }
+
+canvas {
+    max-width: 1000px;
+    margin: auto;
+    display: block;
+}

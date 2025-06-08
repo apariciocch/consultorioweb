@@ -1,6 +1,7 @@
 let generoSeleccionado = 'F';
 let datosPersonales = {};
 let lastResults = null;
+let mcmiChart = null;
 document.getElementById('datos-personales').addEventListener('submit', function(event) {
     event.preventDefault();
     const sel = document.querySelector('input[name="genero"]:checked');
@@ -490,6 +491,84 @@ function obtenerBR(genero, escala, bruto) {
     return isNaN(val) ? bruto : val;
 }
 
+function actualizarGrafico() {
+    const canvas = document.getElementById('mcmiChart');
+    if (!canvas || !lastResults) return;
+    const ctx = canvas.getContext('2d');
+    const keys = [
+        'esquizoide','evitativo','depresivo','dependiente','histrionico','narcisista',
+        'antisocial','agresivo','compulsivo','negativista','autodestructiva',
+        'esquizotipica','limite','paranoide','ansiedad','somatoformo','bipolar',
+        'distimico','alcohol','sustancias','estres','pensamiento','depresion',
+        'delusional','sinceridad','deseabilidad','devaluacion','validez'
+    ];
+    const labels = [
+        'Esquizoide','Evitativa','Depresiva','Dependiente','Histriónica','Narcisista',
+        'Antisocial','Agresiva (sádica)','Compulsiva','Negativista','Autodestructiva',
+        'Esquizotípica','Límite','Paranoide','Trast. ansiedad','Somatomorfo',
+        'Bipolar','Distímico','Alcohol','Sustancias','Estrés Post.','Pensamiento',
+        'Depresión mayor','Delirante','Sinceridad','Deseabilidad','Devaluación','Validez'
+    ];
+    const data = keys.map(k => obtenerBR(generoSeleccionado, codeMap[k], lastResults[k] || 0));
+    const backgroundColorZones = [
+        { label: 'Bajo', color: 'rgba(147, 197, 253, 0.2)', start: 0, end: 60 },
+        { label: 'Promedio', color: 'rgba(134, 239, 172, 0.2)', start: 60, end: 75 },
+        { label: 'Elevado', color: 'rgba(253, 224, 71, 0.2)', start: 75, end: 85 },
+        { label: 'Clínico', color: 'rgba(251, 113, 133, 0.2)', start: 85, end: 115 }
+    ];
+
+    if (mcmiChart) mcmiChart.destroy();
+
+    mcmiChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Puntaje MCMI-III',
+                data: data,
+                borderColor: '#1e3a8a',
+                pointBackgroundColor: '#000',
+                borderWidth: 2,
+                fill: false
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            scales: {
+                x: { min: 0, max: 115, ticks: { stepSize: 10 }, grid: { drawTicks: true, drawOnChartArea: true } },
+                y: { beginAtZero: true }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) { return `${context.label}: ${context.raw}`; }
+                    }
+                }
+            }
+        },
+        plugins: [{
+            id: 'backgroundZones',
+            beforeDraw: (chart) => {
+                const c = chart.ctx;
+                const xScale = chart.scales.x;
+                const chartArea = chart.chartArea;
+                backgroundColorZones.forEach(zone => {
+                    c.save();
+                    c.fillStyle = zone.color;
+                    c.fillRect(
+                        xScale.getPixelForValue(zone.start),
+                        chartArea.top,
+                        xScale.getPixelForValue(zone.end) - xScale.getPixelForValue(zone.start),
+                        chartArea.bottom - chartArea.top
+                    );
+                    c.restore();
+                });
+            }
+        }]
+    });
+}
+
 
 const cuestionario = document.getElementById('cuestionario');
 
@@ -665,6 +744,7 @@ cuestionario.addEventListener('submit', function(event) {
         }
     });
 
+    actualizarGrafico();
     alert('Respuestas guardadas');
 });
 
