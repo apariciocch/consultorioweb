@@ -1,10 +1,18 @@
 let generoSeleccionado = 'F';
+let datosPersonales = {};
+let lastResults = null;
 document.getElementById('datos-personales').addEventListener('submit', function(event) {
     event.preventDefault();
     const sel = document.querySelector('input[name="genero"]:checked');
     if (sel) {
         generoSeleccionado = sel.value;
     }
+    datosPersonales = {
+        nombre: document.getElementById("nombre").value,
+        edad: document.getElementById("edad").value,
+        genero: generoSeleccionado,
+        fecha: new Date().toLocaleDateString("es-ES")
+    };
     alert('Formulario enviado');
 });
 
@@ -275,6 +283,56 @@ const tablaBRMasculino = parseTable(`
 32 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 100
 33 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 115 100
 `);
+const codeMap = {
+    esquizoide: "1",
+    evitativo: "2A",
+    depresivo: "2B",
+    dependiente: "3",
+    histrionico: "4",
+    narcisista: "5",
+    antisocial: "6A",
+    agresivo: "6B",
+    compulsivo: "7",
+    negativista: "8A",
+    autodestructiva: "8B",
+    esquizotipica: "S",
+    limite: "C",
+    paranoide: "P",
+    ansiedad: "A",
+    somatoformo: "H",
+    bipolar: "N",
+    distimico: "D",
+    alcohol: "B",
+    sustancias: "T",
+    estres: "R",
+    pensamiento: "SS",
+    depresion: "CC",
+    delusional: "PP",
+    deseabilidad: "Y",
+    devaluacion: "Z",
+    sinceridad: "X",
+    validez: "V"
+};
+
+function obtenerClasificacion(br) {
+    if (br >= 85) return { clase: "elevado", texto: "Elevado" };
+    if (br >= 75) return { clase: "moderado", texto: "Moderado" };
+    if (br >= 60) return { clase: "sugestivo", texto: "Sugestivo" };
+    if (br >= 35) return { clase: "bajo", texto: "Bajo" };
+    return { clase: "nulo", texto: "Nulo" };
+}
+
+function obtenerBR(genero, escala, bruto) {
+    const tabla = genero === "F" ? tablaBRFemenino : tablaBRMasculino;
+    const arr = tabla[escala];
+    if (!arr) {
+        return bruto;
+    }
+    const idx = Math.max(0, Math.min(arr.length - 1, bruto));
+    const val = arr[idx];
+    return isNaN(val) ? bruto : val;
+}
+
 
 const cuestionario = document.getElementById('cuestionario');
 
@@ -376,6 +434,7 @@ cuestionario.addEventListener('submit', function(event) {
         results.dependiente + results.histrionico + results.narcisista * 2 / 3 +
         results.antisocial + results.agresivo + results.compulsivo +
         results.negativista + results.autodestructiva;
+    lastResults = results;
 
     const mapIds = {
         esquizoide: 'esc-esquizoide',
@@ -413,55 +472,6 @@ cuestionario.addEventListener('submit', function(event) {
         mapBrIds[k] = mapIds[k].replace('esc-', 'br-');
     });
 
-    const codeMap = {
-        esquizoide: '1',
-        evitativo: '2A',
-        depresivo: '2B',
-        dependiente: '3',
-        histrionico: '4',
-        narcisista: '5',
-        antisocial: '6A',
-        agresivo: '6B',
-        compulsivo: '7',
-        negativista: '8A',
-        autodestructiva: '8B',
-        esquizotipica: 'S',
-        limite: 'C',
-        paranoide: 'P',
-        ansiedad: 'A',
-        somatoformo: 'H',
-        bipolar: 'N',
-        distimico: 'D',
-        alcohol: 'B',
-        sustancias: 'T',
-        estres: 'R',
-        pensamiento: 'SS',
-        depresion: 'CC',
-        delusional: 'PP',
-        deseabilidad: 'Y',
-        devaluacion: 'Z',
-        sinceridad: 'X',
-        validez: 'V'
-    };
-
-    function obtenerClasificacion(br) {
-        if (br >= 85) return { clase: 'elevado', texto: 'Elevado' };
-        if (br >= 75) return { clase: 'moderado', texto: 'Moderado' };
-        if (br >= 60) return { clase: 'sugestivo', texto: 'Sugestivo' };
-        if (br >= 35) return { clase: 'bajo', texto: 'Bajo' };
-        return { clase: 'nulo', texto: 'Nulo' };
-    }
-
-    function obtenerBR(genero, escala, bruto) {
-        const tabla = genero === 'F' ? tablaBRFemenino : tablaBRMasculino;
-        const arr = tabla[escala];
-        if (!arr) {
-            return bruto;
-        }
-        const idx = Math.max(0, Math.min(arr.length - 1, bruto));
-        const val = arr[idx];
-        return isNaN(val) ? bruto : val;
-    }
 
     Object.keys(mapIds).forEach(k => {
         const cell = document.getElementById(mapIds[k]);
@@ -500,3 +510,71 @@ cuestionario.addEventListener('submit', function(event) {
 
     alert('Respuestas guardadas');
 });
+
+function generarInforme() {
+    if (!lastResults) {
+        alert("Primero completa y guarda el cuestionario");
+        return;
+    }
+    const nombre = datosPersonales.nombre || "";
+    const edad = datosPersonales.edad || "";
+    const sexo = datosPersonales.genero || "";
+    const fecha = datosPersonales.fecha || "";
+    const baremo = sexo === "F" ? "Femenino" : (sexo === "M" ? "Masculino" : "");
+    const brX = obtenerBR(sexo || generoSeleccionado, "X", lastResults.sinceridad || 0);
+    const brY = obtenerBR(sexo || generoSeleccionado, "Y", lastResults.deseabilidad || 0);
+    const brZ = obtenerBR(sexo || generoSeleccionado, "Z", lastResults.devaluacion || 0);
+    const brV = obtenerBR(sexo || generoSeleccionado, "V", lastResults.validez || 0);
+    const valido = (lastResults.validez || 0) <= 1 ? "Válido" : "Inválido";
+    const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>
+<h1>Informe</h1>
+<h2>Datos Generales del Evaluado</h2>
+<p><b>Nombre completo:</b> ${nombre}</p>
+<p><b>Edad:</b> ${edad}</p>
+<p><b>Sexo:</b> ${sexo}</p>
+<p><b>Fecha de aplicación:</b> ${fecha}</p>
+<p><b>Baremo utilizado:</b> ${baremo}</p>
+<p><b>Responsable de la aplicación:</b> </p>
+<p><b>Actitud ante la prueba:</b> </p>
+<p><b>Validez de las respuestas (escalas X, Y, Z, V):</b></p>
+<ul>
+<li>X Sinceridad: ${brX}</li>
+<li>Y Deseabilidad Social: ${brY}</li>
+<li>Z Devaluación: ${brZ}</li>
+<li>V Validez: ${brV} ${valido}</li>
+</ul>
+<p><b>Estilo de respuesta:</b> </p>
+<p><b>Severidad del Perfil Clínico:</b> </p>
+<p><b>Presencia de trastornos graves de la personalidad (escalas S, C, P):</b> </p>
+<p><b>Presencia de síndromes clínicos severos (SS, CC, PP):</b> </p>
+<p><b>Nivel global de severidad:</b> </p>
+<h2>Orientaciones para el Diagnóstico</h2>
+<p><b>Escalas con puntuaciones destacables:</b> </p>
+<p><b>Síntomas y rasgos predominantes:</b> </p>
+<p><b>Hipótesis diagnóstica orientativa (no definitiva):</b> </p>
+<h2>Estilos y Trastornos de la Personalidad (Eje II)</h2>
+<p><b>Rasgos clínicos de personalidad:</b> </p>
+<p><b>Trastornos de personalidad presentes:</b> </p>
+<p><b>Comorbilidades entre trastornos de personalidad:</b> </p>
+<h2>Síndromes Clínicos (Eje I)</h2>
+<p><b>Descripción de los trastornos clínicos activos (e.g. ansiedad, bipolaridad):</b> </p>
+<p><b>Severidad y sintomatología:</b> </p>
+<p><b>Posibles interacciones o combinaciones de síndromes:</b> </p>
+<h2>Evaluación Multiaxial</h2>
+<p><b>Relación entre los trastornos de personalidad (Eje II) y los síndromes clínicos (Eje I):</b> </p>
+<p><b>Análisis de cómo se influyen mutuamente:</b> </p>
+<p><b>Recomendaciones terapéuticas integrales:</b> </p>
+</body></html>`;
+    const blob = new Blob(["\ufeff", html], { type: "application/msword" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "informe.doc";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+document.getElementById("descargar-informe").addEventListener("click", generarInforme);
+
