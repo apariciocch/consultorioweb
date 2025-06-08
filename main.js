@@ -314,6 +314,163 @@ const codeMap = {
     validez: "V"
 };
 
+const detallesPatrones = {
+    esquizoide: {
+        nombre: "1 Esquizoide",
+        observable: "Impasible",
+        interpersonal: "Desvinculado",
+        estilo: "Empobrecido",
+        autoimagen: "Autosuficiente",
+        objetales: "Escasas",
+        defensa: "Intelectualización",
+        morfologia: "Indiferenciada",
+        animo: "Apático"
+    },
+    evitativo: {
+        nombre: "2A Evitativo",
+        observable: "Ansioso",
+        interpersonal: "Aversivo",
+        estilo: "Distraído",
+        autoimagen: "Alienada",
+        objetales: "Vejatorias",
+        defensa: "Fantasía",
+        morfologia: "Frágil",
+        animo: "Angustiado"
+    },
+    depresivo: {
+        nombre: "2B Depresivo",
+        observable: "Abatido",
+        interpersonal: "Indefenso",
+        estilo: "Pesimista",
+        autoimagen: "Inútil",
+        objetales: "Abandonadas",
+        defensa: "Ascetismo",
+        morfologia: "Disminuida",
+        animo: "Melancólico"
+    },
+    dependiente: {
+        nombre: "3 Dependiente",
+        observable: "Incompetente",
+        interpersonal: "Sumiso",
+        estilo: "Ingenuo",
+        autoimagen: "Inepta",
+        objetales: "Inmaduras",
+        defensa: "Introyección",
+        morfologia: "Rudimentaria",
+        animo: "Pacífico"
+    },
+    histrionico: {
+        nombre: "4 Histriónico",
+        observable: "Dramático",
+        interpersonal: "Buscador de atención",
+        estilo: "Frívolo",
+        autoimagen: "Gregaria",
+        objetales: "Superficiales",
+        defensa: "Disociación",
+        morfologia: "Inconexa",
+        animo: "Inconstante"
+    },
+    narcisista: {
+        nombre: "5 Narcisita",
+        observable: "Arrogante",
+        interpersonal: "Explotador",
+        estilo: "Expansivo",
+        autoimagen: "Admirable",
+        objetales: "Artificiales",
+        defensa: "Racionalización",
+        morfologia: "Espúria",
+        animo: "Despreocupado"
+    },
+    antisocial: {
+        nombre: "6A Antisocial",
+        observable: "Impulsivo",
+        interpersonal: "Irresponsable",
+        estilo: "Desviado",
+        autoimagen: "Autónoma",
+        objetales: "Degradadas",
+        defensa: "Impulsividad actuación",
+        morfologia: "Indisciplinada",
+        animo: "Insensible"
+    },
+    agresivo: {
+        nombre: "6B Agresivo-sádico",
+        observable: "Precipitado",
+        interpersonal: "Áspero",
+        estilo: "Dogmático",
+        autoimagen: "Combativa",
+        objetales: "Perniciosas",
+        defensa: "Aislamiento",
+        morfologia: "Tendente a la erupción",
+        animo: "Hostil"
+    },
+    compulsivo: {
+        nombre: "7 Compulsivo",
+        observable: "Disciplinado",
+        interpersonal: "Respetuoso",
+        estilo: "Constreñido",
+        autoimagen: "Escrupulosa",
+        objetales: "Ocultas",
+        defensa: "Formación reactiva",
+        morfologia: "Compartimentada",
+        animo: "Solemne"
+    },
+    negativista: {
+        nombre: "8A Negativista (pasivo-agresivo)",
+        observable: "Resentido",
+        interpersonal: "No cooperador",
+        estilo: "Escéptico",
+        autoimagen: "Descontenta",
+        objetales: "Vacilantes",
+        defensa: "Desplazamiento",
+        morfologia: "Divergente",
+        animo: "Irritable"
+    },
+    autodestructiva: {
+        nombre: "8B Autodestructiva",
+        observable: "Abstinente",
+        interpersonal: "Deferente",
+        estilo: "Inseguro",
+        autoimagen: "Desmerecedora",
+        objetales: "Desacreditadas",
+        defensa: "Exageración",
+        morfologia: "Invertida",
+        animo: "Disfórico"
+    },
+    esquizotipica: {
+        nombre: "S Esquizotípica",
+        observable: "Excéntrico",
+        interpersonal: "Reservado",
+        estilo: "Autístico",
+        autoimagen: "Enajenada",
+        objetales: "Caóticas",
+        defensa: "Anulación",
+        morfologia: "Fragmentada",
+        animo: "Aturdido o insensible"
+    },
+    limite: {
+        nombre: "C Límite",
+        observable: "Irregular",
+        interpersonal: "Paradójico",
+        estilo: "Caprichoso",
+        autoimagen: "Insegura",
+        objetales: "Incompatibles",
+        defensa: "Regresión",
+        morfologia: "Dividida",
+        animo: "Lábil"
+    },
+    paranoide: {
+        nombre: "P Paranoide",
+        observable: "Defensivo",
+        interpersonal: "Provocativo",
+        estilo: "Suspicaz",
+        autoimagen: "Inviolable",
+        objetales: "Inalterables",
+        defensa: "Proyección",
+        morfologia: "Inflexible",
+        animo: "Irascible"
+    }
+};
+
 function obtenerClasificacion(br) {
     if (br >= 85) return { clase: "elevado", texto: "Elevado" };
     if (br >= 75) return { clase: "moderado", texto: "Moderado" };
@@ -521,46 +678,123 @@ function generarInforme() {
     const sexo = datosPersonales.genero || "";
     const fecha = datosPersonales.fecha || "";
     const baremo = sexo === "F" ? "Femenino" : (sexo === "M" ? "Masculino" : "");
-    const brX = obtenerBR(sexo || generoSeleccionado, "X", lastResults.sinceridad || 0);
-    const brY = obtenerBR(sexo || generoSeleccionado, "Y", lastResults.deseabilidad || 0);
-    const brZ = obtenerBR(sexo || generoSeleccionado, "Z", lastResults.devaluacion || 0);
-    const brV = obtenerBR(sexo || generoSeleccionado, "V", lastResults.validez || 0);
+
+    function infoBR(clave) {
+        const br = obtenerBR(sexo || generoSeleccionado, codeMap[clave], lastResults[clave] || 0);
+        const clas = obtenerClasificacion(br).texto;
+        return { br, clas };
+    }
+
+    const x = infoBR('sinceridad');
+    const y = infoBR('deseabilidad');
+    const z = infoBR('devaluacion');
+    const v = infoBR('validez');
     const valido = (lastResults.validez || 0) <= 1 ? "Válido" : "Inválido";
+
+    const tpKeys = ['esquizotipica','limite','paranoide'];
+    const tpHtml = tpKeys.map(k => {
+        const inf = infoBR(k);
+        return `<li>${detallesPatrones[k].nombre}: ${inf.br} (${inf.clas})</li>`;
+    }).join('');
+
+    const scSevero = ['pensamiento','depresion','delusional'];
+    const scSeveroHtml = scSevero.map(k => {
+        const nombres = {pensamiento:'SS Desorden del pensamiento', depresion:'CC Depresión mayor', delusional:'PP Desorden delusional'};
+        const inf = infoBR(k);
+        return `<li>${nombres[k]}: ${inf.br} (${inf.clas})</li>`;
+    }).join('');
+
+    const maxGlobal = Math.max(
+        infoBR('esquizotipica').br,
+        infoBR('limite').br,
+        infoBR('paranoide').br,
+        infoBR('pensamiento').br,
+        infoBR('depresion').br,
+        infoBR('delusional').br
+    );
+    const globalInfo = obtenerClasificacion(maxGlobal).texto;
+
+    const escalaDestacable = [];
+    Object.keys(codeMap).forEach(k => {
+        if (['X','Y','Z','V'].includes(codeMap[k])) return;
+        const inf = infoBR(k);
+        if (inf.br >= 60) {
+            const nombreEsc = detallesPatrones[k]?.nombre ||
+                (k === 'pensamiento' ? 'SS Desorden del pensamiento' :
+                k === 'depresion' ? 'CC Depresión mayor' :
+                k === 'delusional' ? 'PP Desorden delusional' :
+                (k.charAt(0).toUpperCase() + k.slice(1)));
+            escalaDestacable.push(`<li>${nombreEsc}: ${inf.br} (${inf.clas})</li>`);
+        }
+    });
+    const escalaDestacableHtml = escalaDestacable.join('');
+
+    const patrones = ['esquizoide','evitativo','depresivo','dependiente','histrionico','narcisista','antisocial','agresivo','compulsivo','negativista','autodestructiva'];
+    const patronesHtml = patrones.map(k => {
+        const inf = infoBR(k);
+        if (inf.br < 60) return '';
+        const d = detallesPatrones[k];
+        return `<p><b>${d.nombre}:</b> ${inf.br} (${inf.clas})<br>
+        Comportamiento observable: ${d.observable}. Comportamiento interpersonal: ${d.interpersonal}. Estilo cognitivo: ${d.estilo}. Autoimagen: ${d.autoimagen}. Representaciones objetales: ${d.objetales}. Mecanismos de defensa: ${d.defensa}. Organización morfológica: ${d.morfologia}. Estado de ánimo / temperamento: ${d.animo}.</p>`;
+    }).join('');
+
+    const sindromes = ['ansiedad','somatoformo','bipolar','distimico','alcohol','sustancias','estres'];
+    const nombresSind = {
+        ansiedad:'A Trastornos de Ansiedad',
+        somatoformo:'H Trastorno Somatoformo',
+        bipolar:'N Trastorno Bipolar',
+        distimico:'D Trastorno Distímico',
+        alcohol:'B Dependencia del alcohol',
+        sustancias:'T Dependencia de sustancias',
+        estres:'R Trastorno estrés postraumático'
+    };
+    const sindHtml = sindromes.map(k => {
+        const inf = infoBR(k);
+        if (inf.br < 60) return '';
+        return `<li>${nombresSind[k]}: ${inf.br} (${inf.clas})</li>`;
+    }).join('');
+
     const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>
 <h1>Informe</h1>
-<h2>Datos Generales del Evaluado</h2>
+<h2>1 Datos Generales del Evaluado</h2>
 <p><b>Nombre completo:</b> ${nombre}</p>
 <p><b>Edad:</b> ${edad}</p>
 <p><b>Sexo:</b> ${sexo}</p>
 <p><b>Fecha de aplicación:</b> ${fecha}</p>
 <p><b>Baremo utilizado:</b> ${baremo}</p>
 <p><b>Responsable de la aplicación:</b> </p>
-<p><b>Actitud ante la prueba:</b> </p>
+<h2>2 Actitud ante la prueba</h2>
 <p><b>Validez de las respuestas (escalas X, Y, Z, V):</b></p>
 <ul>
-<li>X Sinceridad: ${brX}</li>
-<li>Y Deseabilidad Social: ${brY}</li>
-<li>Z Devaluación: ${brZ}</li>
-<li>V Validez: ${brV} ${valido}</li>
+<li>X Sinceridad: ${x.br} (${x.clas})</li>
+<li>Y Deseabilidad Social: ${y.br} (${y.clas})</li>
+<li>Z Devaluación: ${z.br} (${z.clas})</li>
+<li>V Validez: ${v.br} (${valido})</li>
 </ul>
 <p><b>Estilo de respuesta:</b> </p>
-<p><b>Severidad del Perfil Clínico:</b> </p>
-<p><b>Presencia de trastornos graves de la personalidad (escalas S, C, P):</b> </p>
-<p><b>Presencia de síndromes clínicos severos (SS, CC, PP):</b> </p>
-<p><b>Nivel global de severidad:</b> </p>
-<h2>Orientaciones para el Diagnóstico</h2>
-<p><b>Escalas con puntuaciones destacables:</b> </p>
+<h2>3 Severidad del Perfil Clínico</h2>
+<p><b>Presencia de trastornos graves de la personalidad:</b></p>
+<ul>${tpHtml}</ul>
+<p><b>Presencia de síndromes clínicos severos:</b></p>
+<ul>${scSeveroHtml}</ul>
+<p><b>Nivel global de severidad:</b> ${maxGlobal} (${globalInfo})</p>
+<h2>4 Orientaciones para el Diagnóstico</h2>
+<p><b>Escalas con puntuaciones destacables:</b></p>
+<ul>${escalaDestacableHtml}</ul>
 <p><b>Síntomas y rasgos predominantes:</b> </p>
 <p><b>Hipótesis diagnóstica orientativa (no definitiva):</b> </p>
-<h2>Estilos y Trastornos de la Personalidad (Eje II)</h2>
-<p><b>Rasgos clínicos de personalidad:</b> </p>
-<p><b>Trastornos de personalidad presentes:</b> </p>
+<h2>5 Estilos y Trastornos de la Personalidad (Eje II)</h2>
+<p><b>Rasgos clínicos de personalidad:</b></p>
+${patronesHtml}
+<p><b>Trastornos de personalidad presentes:</b></p>
+<ul>${tpHtml}</ul>
 <p><b>Comorbilidades entre trastornos de personalidad:</b> </p>
-<h2>Síndromes Clínicos (Eje I)</h2>
-<p><b>Descripción de los trastornos clínicos activos (e.g. ansiedad, bipolaridad):</b> </p>
+<h2>6 Síndromes Clínicos (Eje I)</h2>
+<p><b>Descripción de los trastornos clínicos activos:</b></p>
+<ul>${sindHtml}</ul>
 <p><b>Severidad y sintomatología:</b> </p>
 <p><b>Posibles interacciones o combinaciones de síndromes:</b> </p>
-<h2>Evaluación Multiaxial</h2>
+<h2>7 Evaluación Multiaxial</h2>
 <p><b>Relación entre los trastornos de personalidad (Eje II) y los síndromes clínicos (Eje I):</b> </p>
 <p><b>Análisis de cómo se influyen mutuamente:</b> </p>
 <p><b>Recomendaciones terapéuticas integrales:</b> </p>
