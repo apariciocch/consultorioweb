@@ -14,7 +14,7 @@
         <input type="text" id="nombre" name="nombre" required>
         <br>
         <fieldset>
-            <legend>Género (escriba "M" o "F")</legend>
+            <legend>Género (seleccione "M" o "F")</legend>
             <label><input type="radio" name="genero" value="F"> Femenino</label>
             <label><input type="radio" name="genero" value="M"> Masculino</label>
         </fieldset>
@@ -23,10 +23,11 @@
         <input type="number" id="edad" name="edad" min="0" placeholder="26" required>
         <br>
         <fieldset>
-            <legend>Tiempo de enfermedad (marque con una "X")</legend>
+            <legend>Tiempo de enfermedad (seleccione)</legend>
             <label><input type="radio" name="tiempo" value="menos1"> Menos de 1 semana</label>
             <label><input type="radio" name="tiempo" value="1a4"> De 1 a 4 semanas</label>
-            <label><input type="radio" name="tiempo" value="mas4" checked> Más de 4 semanas o sin enfermedad</label>
+            <label><input type="radio" name="tiempo" value="mas4" checked> Más de 4 semanas</label>
+            <label><input type="radio" name="tiempo" value="sinenf" checked> Sin enfermedad</label>
         </fieldset>
         <br>
         <button type="submit">Enviar</button>
