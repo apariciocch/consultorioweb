@@ -195,6 +195,7 @@ preguntas.forEach((texto, index) => {
     radioV.type = 'radio';
     radioV.name = 'p' + index;
     radioV.value = '1';
+    radioV.checked = true;
     labelV.appendChild(radioV);
     labelV.append(' Verdadero');
 
