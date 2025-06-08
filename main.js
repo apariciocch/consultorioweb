@@ -228,5 +228,97 @@ cuestionario.addEventListener('submit', function(event) {
         return;
     }
     console.log(respuestas);
+
+    const ans = {};
+    Object.keys(respuestas).forEach(k => {
+        ans[parseInt(k.slice(1)) + 1] = parseInt(respuestas[k]);
+    });
+
+    function sum(arr) {
+        return arr.reduce((acc, q) => acc + (ans[q] || 0), 0);
+    }
+
+    const scales = {
+        esquizoide: [5,11,28,33,39,47,49,58,93,102,106,143,149,157,166,168],
+        evitativo: [19,41,48,49,58,70,81,85,100,128,142,147,149,152,159,175],
+        depresivo: [21,25,26,44,48,84,87,113,124,134,143,146,149,152,155],
+        dependiente: [17,36,46,48,57,74,83,85,95,109,121,134,136,142,152,170],
+        histrionico: [11,13,22,25,28,33,49,52,58,70,81,89,93,100,124,128,175],
+        narcisista: [6,22,27,32,36,39,41,48,58,68,70,81,85,86,87,89,94,95,100,117,142,145,160,170],
+        antisocial: [8,14,15,18,22,39,42,53,54,94,102,114,123,137,140,167,173],
+        agresivo: [8,10,14,15,18,29,34,37,40,42,50,54,65,80,88,94,96,97,117,167],
+        compulsivo: [3,8,15,23,30,42,54,60,73,83,98,102,115,138,140,167,173],
+        negativista: [7,8,16,23,37,43,51,61,80,84,99,116,123,127,134,167],
+        autodestructiva: [19,20,25,26,36,41,44,71,91,99,105,123,149,162,170],
+
+        esquizotipica: [9,49,70,72,77,100,103,118,135,139,142,149,152,157,159,163],
+        limite: [8,23,31,42,73,84,99,121,123,135,136,143,155,162,172,167],
+        paranoide: [7,9,34,43,49,50,61,64,90,104,116,139,147,159,160,168,176],
+
+        ansiedad: [41,59,62,76,77,109,110,125,136,146,148,150,165,171],
+        somatoformo: [2,5,12,38,56,75,76,108,112,131,146,149],
+        bipolar: [4,23,42,52,55,84,97,107,118,126,135,167,171],
+        distimico: [16,25,26,56,63,84,87,105,112,131,142,143,149],
+        alcohol: [15,24,42,53,65,78,94,101,102,114,123,132,140,153,167],
+        sustancias: [8,14,22,39,40,42,54,67,92,102,114,119,137,140],
+        estres: [63,77,84,110,124,130,134,143,148,149,150,152,155,161,165,174],
+
+        pensamiento: [22,34,56,61,68,72,76,78,83,102,117,134,142,148,151,162,168],
+        depresion: [1,4,34,44,55,74,104,107,111,128,130,142,148,149,150,154,171],
+        delusional: [5,38,49,63,67,89,103,119,138,140,153,159,175],
+
+        deseabilidad: [20,32,35,40,51,57,59,69,80,82,88,97,104,112,123,137,141,148,151,172],
+        devaluacion: [1,4,8,15,22,24,30,34,36,44,55,56,58,62,63,70,74,75,76,83,84,86,99,111,123,128,133,134,142,145,150,171],
+        validez: [65,110,157]
+    };
+
+    const results = {};
+    Object.keys(scales).forEach(k => {
+        results[k] = sum(scales[k]);
+    });
+
+    results.sinceridad = results.esquizoide + results.evitativo + results.depresivo +
+        results.dependiente + results.histrionico + results.narcisista * 2 / 3 +
+        results.antisocial + results.agresivo + results.compulsivo +
+        results.negativista + results.autodestructiva;
+
+    const mapIds = {
+        esquizoide: 'esc-esquizoide',
+        evitativo: 'esc-evitativo',
+        depresivo: 'esc-depresivo',
+        dependiente: 'esc-dependiente',
+        histrionico: 'esc-histrionico',
+        narcisista: 'esc-narcisista',
+        antisocial: 'esc-antisocial',
+        agresivo: 'esc-agresivo',
+        compulsivo: 'esc-compulsivo',
+        negativista: 'esc-negativista',
+        autodestructiva: 'esc-autodestructiva',
+        esquizotipica: 'esc-esquizotipica',
+        limite: 'esc-limite',
+        paranoide: 'esc-paranoide',
+        ansiedad: 'esc-ansiedad',
+        somatoformo: 'esc-somatoformo',
+        bipolar: 'esc-bipolar',
+        distimico: 'esc-distimico',
+        alcohol: 'esc-alcohol',
+        sustancias: 'esc-sustancias',
+        estres: 'esc-estres',
+        pensamiento: 'esc-pensamiento',
+        depresion: 'esc-depresion',
+        delusional: 'esc-delusional',
+        sinceridad: 'esc-sinceridad',
+        deseabilidad: 'esc-deseabilidad',
+        devaluacion: 'esc-devaluacion',
+        validez: 'esc-validez'
+    };
+
+    Object.keys(mapIds).forEach(k => {
+        const cell = document.getElementById(mapIds[k]);
+        if (cell) {
+            cell.textContent = results[k] !== undefined ? results[k] : '';
+        }
+    });
+
     alert('Respuestas guardadas');
 });
