@@ -535,7 +535,7 @@ function actualizarGrafico() {
         options: {
             indexAxis: 'y',
             scales: {
-                x: { min: 0, max: 115, ticks: { stepSize: 10 }, grid: { drawTicks: true, drawOnChartArea: true } },
+                x: { min: 0, max: 200, ticks: { stepSize: 10 }, grid: { drawTicks: true, drawOnChartArea: true } },
                 y: { beginAtZero: true }
             },
             plugins: {
