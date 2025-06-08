@@ -187,7 +187,7 @@ const preguntas = [
 "A algunas personas que se supone que son mis amigos les gustaría hacerme daño."
 ];
 
-const brKeys = ['1','2A','2B','3','4','5','6A','6B','7','8A','8B','S','C','P','A','H','N','D','B','T','R','SS','CC','PP','Y','Z'];
+const brKeys = ['1','2A','2B','3','4','5','6A','6B','7','8A','8B','S','C','P','A','H','N','D','B','T','R','SS','CC','PP','Y','Z','X','V'];
 
 function parseTable(str) {
     const table = {};
@@ -439,15 +439,20 @@ cuestionario.addEventListener('submit', function(event) {
         depresion: 'CC',
         delusional: 'PP',
         deseabilidad: 'Y',
-        devaluacion: 'Z'
+        devaluacion: 'Z',
+        sinceridad: 'X',
+        validez: 'V'
     };
 
     function obtenerBR(genero, escala, bruto) {
         const tabla = genero === 'F' ? tablaBRFemenino : tablaBRMasculino;
         const arr = tabla[escala];
-        if (!arr) return '';
+        if (!arr) {
+            return bruto;
+        }
         const idx = Math.max(0, Math.min(arr.length - 1, bruto));
-        return arr[idx];
+        const val = arr[idx];
+        return isNaN(val) ? bruto : val;
     }
 
     Object.keys(mapIds).forEach(k => {
