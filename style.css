@@ -3,8 +3,19 @@ body {
     margin: 20px;
 }
 
-form {
+#datos-personales {
     max-width: 400px;
+}
+
+#cuestionario {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#cuestionario fieldset {
+    width: calc(50% - 10px);
+    box-sizing: border-box;
 }
 
 fieldset {
