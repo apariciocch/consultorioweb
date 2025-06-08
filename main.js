@@ -444,6 +444,14 @@ cuestionario.addEventListener('submit', function(event) {
         validez: 'V'
     };
 
+    function obtenerClasificacion(br) {
+        if (br >= 85) return { clase: 'elevado', texto: 'Elevado' };
+        if (br >= 75) return { clase: 'moderado', texto: 'Moderado' };
+        if (br >= 60) return { clase: 'sugestivo', texto: 'Sugestivo' };
+        if (br >= 35) return { clase: 'bajo', texto: 'Bajo' };
+        return { clase: 'nulo', texto: 'Nulo' };
+    }
+
     function obtenerBR(genero, escala, bruto) {
         const tabla = genero === 'F' ? tablaBRFemenino : tablaBRMasculino;
         const arr = tabla[escala];
@@ -467,7 +475,15 @@ cuestionario.addEventListener('submit', function(event) {
         if (cell) {
             const code = codeMap[k];
             if (code && results[k] !== undefined) {
-                cell.textContent = obtenerBR(generoSeleccionado, code, results[k]);
+                const br = obtenerBR(generoSeleccionado, code, results[k]);
+                cell.textContent = br;
+                const bar = document.getElementById('bar-' + k);
+                if (bar) {
+                    const info = obtenerClasificacion(br);
+                    bar.style.width = Math.min(br, 115) / 115 * 100 + '%';
+                    bar.classList.add(info.clase);
+                    bar.setAttribute('data-label', info.texto);
+                }
             } else {
                 cell.textContent = '';
             }
