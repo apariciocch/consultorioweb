@@ -2,10 +2,6 @@
 
 Este repositorio contiene un ejemplo de cuestionario web y utilidades adicionales.
 
-Al completar el cuestionario es posible descargar un informe en formato Word. Dicho
-informe ahora muestra para cada escala del MCMI‑III tanto el puntaje bruto
-como su correspondiente índice BR.
-
 ## Calcular Índice de Sinceridad
 
 Se incluye un script `sinceridad.py` para obtener un BR aproximado de la escala X (Sinceridad) del MCMI‑III.

@@ -760,10 +760,9 @@ function generarInforme() {
     const baremo = sexo === "F" ? "Femenino" : (sexo === "M" ? "Masculino" : "");
 
     function infoBR(clave) {
-        const bruto = lastResults[clave] || 0;
-        const br = obtenerBR(sexo || generoSeleccionado, codeMap[clave], bruto);
+        const br = obtenerBR(sexo || generoSeleccionado, codeMap[clave], lastResults[clave] || 0);
         const clas = obtenerClasificacion(br).texto;
-        return { bruto, br, clas };
+        return { br, clas };
     }
 
     const x = infoBR('sinceridad');
@@ -775,14 +774,14 @@ function generarInforme() {
     const tpKeys = ['esquizotipica','limite','paranoide'];
     const tpHtml = tpKeys.map(k => {
         const inf = infoBR(k);
-        return `<li>${detallesPatrones[k].nombre}: Br ${inf.bruto}, BR ${inf.br} (${inf.clas})</li>`;
+        return `<li>${detallesPatrones[k].nombre}: ${inf.br} (${inf.clas})</li>`;
     }).join('');
 
     const scSevero = ['pensamiento','depresion','delusional'];
     const scSeveroHtml = scSevero.map(k => {
         const nombres = {pensamiento:'SS Desorden del pensamiento', depresion:'CC Depresión mayor', delusional:'PP Desorden delusional'};
         const inf = infoBR(k);
-        return `<li>${nombres[k]}: Br ${inf.bruto}, BR ${inf.br} (${inf.clas})</li>`;
+        return `<li>${nombres[k]}: ${inf.br} (${inf.clas})</li>`;
     }).join('');
 
     const maxGlobal = Math.max(
@@ -805,7 +804,7 @@ function generarInforme() {
                 k === 'depresion' ? 'CC Depresión mayor' :
                 k === 'delusional' ? 'PP Desorden delusional' :
                 (k.charAt(0).toUpperCase() + k.slice(1)));
-            escalaDestacable.push(`<li>${nombreEsc}: Br ${inf.bruto}, BR ${inf.br} (${inf.clas})</li>`);
+            escalaDestacable.push(`<li>${nombreEsc}: ${inf.br} (${inf.clas})</li>`);
         }
     });
     const escalaDestacableHtml = escalaDestacable.join('');
@@ -815,7 +814,7 @@ function generarInforme() {
         const inf = infoBR(k);
         if (inf.br < 60) return '';
         const d = detallesPatrones[k];
-        return `<p><b>${d.nombre}:</b> Br ${inf.bruto}, BR ${inf.br} (${inf.clas})<br>
+        return `<p><b>${d.nombre}:</b> ${inf.br} (${inf.clas})<br>
         Comportamiento observable: ${d.observable}. Comportamiento interpersonal: ${d.interpersonal}. Estilo cognitivo: ${d.estilo}. Autoimagen: ${d.autoimagen}. Representaciones objetales: ${d.objetales}. Mecanismos de defensa: ${d.defensa}. Organización morfológica: ${d.morfologia}. Estado de ánimo / temperamento: ${d.animo}.</p>`;
     }).join('');
 
@@ -832,7 +831,7 @@ function generarInforme() {
     const sindHtml = sindromes.map(k => {
         const inf = infoBR(k);
         if (inf.br < 60) return '';
-        return `<li>${nombresSind[k]}: Br ${inf.bruto}, BR ${inf.br} (${inf.clas})</li>`;
+        return `<li>${nombresSind[k]}: ${inf.br} (${inf.clas})</li>`;
     }).join('');
 
     const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>
@@ -847,10 +846,10 @@ function generarInforme() {
 <h2>2 Actitud ante la prueba</h2>
 <p><b>Validez de las respuestas (escalas X, Y, Z, V):</b></p>
 <ul>
-<li>X Sinceridad: Br ${x.bruto}, BR ${x.br} (${x.clas})</li>
-<li>Y Deseabilidad Social: Br ${y.bruto}, BR ${y.br} (${y.clas})</li>
-<li>Z Devaluación: Br ${z.bruto}, BR ${z.br} (${z.clas})</li>
-<li>V Validez: Br ${v.bruto}, BR ${v.br} (${valido})</li>
+<li>X Sinceridad: ${x.br} (${x.clas})</li>
+<li>Y Deseabilidad Social: ${y.br} (${y.clas})</li>
+<li>Z Devaluación: ${z.br} (${z.clas})</li>
+<li>V Validez: ${v.br} (${valido})</li>
 </ul>
 <p><b>Estilo de respuesta:</b> </p>
 <h2>3 Severidad del Perfil Clínico</h2>
