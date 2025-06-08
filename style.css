@@ -77,3 +77,5 @@ button {
 .sugestivo { background-color: #f1c40f; }
 .bajo { background-color: #2ecc71; }
 .nulo { background-color: #95a5a6; }
+.valido { background-color: #2ecc71; }
+.invalido { background-color: #e74c3c; }
