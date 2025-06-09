@@ -2,6 +2,13 @@ let generoSeleccionado = 'F';
 let datosPersonales = {};
 let lastResults = null;
 let mcmiChart = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const fechaInput = document.getElementById('fecha');
+    if (fechaInput) {
+        fechaInput.value = new Date().toISOString().split('T')[0];
+    }
+});
 document.getElementById('datos-personales').addEventListener('submit', function(event) {
     event.preventDefault();
     const sel = document.querySelector('input[name="genero"]:checked');
@@ -12,7 +19,8 @@ document.getElementById('datos-personales').addEventListener('submit', function(
         nombre: document.getElementById("nombre").value,
         edad: document.getElementById("edad").value,
         genero: generoSeleccionado,
-        fecha: new Date().toLocaleDateString("es-ES")
+        fecha: document.getElementById("fecha").value || new Date().toLocaleDateString("es-ES"),
+        responsable: document.getElementById("responsable").value
     };
     Swal.fire({text: 'Formulario enviado', icon: 'success'});
 });
@@ -770,6 +778,7 @@ function generarInforme() {
     const edad = datosPersonales.edad || "";
     const sexo = datosPersonales.genero || "";
     const fecha = datosPersonales.fecha || "";
+    const responsable = datosPersonales.responsable || "";
     const baremo = sexo === "F" ? "Femenino" : (sexo === "M" ? "Masculino" : "");
 
     function infoBR(clave) {
@@ -856,7 +865,7 @@ function generarInforme() {
 <p><b>Sexo:</b> ${sexo}</p>
 <p><b>Fecha de aplicación:</b> ${fecha}</p>
 <p><b>Baremo utilizado:</b> ${baremo}</p>
-<p><b>Responsable de la aplicación:</b> </p>
+<p><b>Responsable de la aplicación:</b> ${responsable}</p>
 <h2>2 Actitud ante la prueba</h2>
 <p><b>Validez de las respuestas (escalas X, Y, Z, V):</b></p>
 <ul>

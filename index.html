@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Datos Personales</h1>
+    <h1>Datos Generales del Evaluado</h1>
     <p>Escriba los datos en los casilleros correspondientes</p>
     <form id="datos-personales">
         <label for="nombre">Nombre:</label>
@@ -30,6 +30,13 @@
             <label><input type="radio" name="tiempo" value="sinenf" checked> Sin enfermedad</label>
         </fieldset>
         <br>
+        <label for="fecha">Fecha de aplicación:</label>
+        <input type="date" id="fecha" name="fecha">
+        <br>
+        <label for="responsable">Responsable de la aplicación:</label>
+        <input type="text" id="responsable" name="responsable">
+        <br>
+        <button type="submit">Guardar datos</button>
     </form>
 
     <h2>Cuestionario</h2>
