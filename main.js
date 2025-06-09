@@ -14,7 +14,7 @@ document.getElementById('datos-personales').addEventListener('submit', function(
         genero: generoSeleccionado,
         fecha: new Date().toLocaleDateString("es-ES")
     };
-    alert('Formulario enviado');
+    Swal.fire({text: 'Formulario enviado', icon: 'success'});
 });
 
 // Preguntas del cuestionario (valor 1 si se marca "Verdadero", 0 si es "Falso")
@@ -620,7 +620,7 @@ cuestionario.addEventListener('submit', function(event) {
         }
     });
     if (!todas) {
-        alert('Por favor responde todas las preguntas');
+        Swal.fire({text: 'Por favor responde todas las preguntas', icon: 'warning'});
         return;
     }
     console.log(respuestas);
@@ -757,12 +757,12 @@ cuestionario.addEventListener('submit', function(event) {
         actualizarGrafico();
     }
 
-    alert('Respuestas guardadas');
+    Swal.fire({text: 'Respuestas guardadas', icon: 'success'});
 });
 
 function generarInforme() {
     if (!lastResults) {
-        alert("Primero completa y guarda el cuestionario");
+        Swal.fire({text: 'Primero completa y guarda el cuestionario', icon: 'info'});
         return;
     }
     // Se eliminó la generación de la imagen del gráfico para que no aparezca en el informe
