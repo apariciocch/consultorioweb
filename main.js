@@ -601,6 +601,12 @@ preguntas.forEach((texto, index) => {
     cuestionario.appendChild(fieldset);
 });
 
+const guardarBtn = document.createElement('button');
+guardarBtn.type = 'submit';
+guardarBtn.id = 'guardar-respuestas';
+guardarBtn.textContent = 'Guardar respuestas';
+cuestionario.appendChild(guardarBtn);
+
 cuestionario.addEventListener('submit', function(event) {
     event.preventDefault();
     const respuestas = {};
