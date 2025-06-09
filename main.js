@@ -759,8 +759,7 @@ function generarInforme() {
         alert("Primero completa y guarda el cuestionario");
         return;
     }
-    actualizarGrafico();
-    const chartImg = document.getElementById('mcmiChart').toDataURL('image/png');
+    // Se eliminó la generación de la imagen del gráfico para que no aparezca en el informe
     const nombre = datosPersonales.nombre || "";
     const edad = datosPersonales.edad || "";
     const sexo = datosPersonales.genero || "";
@@ -886,7 +885,7 @@ ${patronesHtml}
 <p><b>Relación entre los trastornos de personalidad (Eje II) y los síndromes clínicos (Eje I):</b> </p>
 <p><b>Análisis de cómo se influyen mutuamente:</b> </p>
 <p><b>Recomendaciones terapéuticas integrales:</b> </p>
-<img src="${chartImg}" alt="Perfil MCMI-III"></body></html>`;
+    </body></html>`;
     const blob = new Blob(["\ufeff", html], { type: "application/msword" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
