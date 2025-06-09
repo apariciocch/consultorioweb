@@ -858,7 +858,7 @@ function generarInforme() {
 
     const titulo = nombre ? `Informe de ${nombre}` : 'Informe';
     const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>
-<h1>${titulo}</h1>
+<h1>Informe General</h1>
 <h2>1 Datos Generales del Evaluado</h2>
 <p><b>Nombre completo:</b> ${nombre}</p>
 <p><b>Edad:</b> ${edad}</p>
