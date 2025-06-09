@@ -856,7 +856,7 @@ function generarInforme() {
         return `<li>${nombresSind[k]}: ${inf.br} (${inf.clas})</li>`;
     }).join('');
 
-    const titulo = nombre ? `Informe de ${nombre}` : 'Informe';
+   
     const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body>
 <h1>Informe General</h1>
 <h2>1 Datos Generales del Evaluado</h2>
@@ -864,7 +864,7 @@ function generarInforme() {
 <p><b>Edad:</b> ${edad}</p>
 <p><b>Sexo:</b> ${sexo}</p>
 <p><b>Fecha de aplicación:</b> ${fecha}</p>
-<p><b>Baremo utilizado:</b> ${baremo}</p>
+<p><b>Baremo utilizado:</b>  </p>
 <p><b>Responsable de la aplicación:</b> ${responsable}</p>
 <h2>2 Actitud ante la prueba</h2>
 <p><b>Validez de las respuestas (escalas X, Y, Z, V):</b></p>
