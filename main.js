@@ -751,6 +751,12 @@ cuestionario.addEventListener('submit', function(event) {
         }
     });
 
+    const canvas = document.getElementById('mcmiChart');
+    if (canvas) {
+        canvas.classList.remove('hidden');
+        actualizarGrafico();
+    }
+
     alert('Respuestas guardadas');
 });
 
