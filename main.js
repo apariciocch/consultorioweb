@@ -896,7 +896,8 @@ ${patronesHtml}
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "informe.doc";
+    const safeName = nombre ? `informe_${nombre.trim().replace(/\s+/g, '_')}.doc` : 'informe.doc';
+    a.download = safeName;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
