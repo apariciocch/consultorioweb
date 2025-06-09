@@ -31,6 +31,10 @@ button {
     padding: 5px 10px;
 }
 
+#guardar-respuestas {
+    background-color: #90EE90;
+}
+
 #resultados {
     width: 100%;
     border-collapse: collapse;
